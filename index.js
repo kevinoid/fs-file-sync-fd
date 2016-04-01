@@ -4,36 +4,8 @@
  */
 'use strict';
 
-var modulename = {};
+var fsFileSyncFD = require('./fs-file-sync-fd');
 
-modulename.func = function func(options, callback) {
-  if (!callback && typeof options === 'function') {
-    callback = options;
-    options = null;
-  }
-
-  if (!callback && typeof Promise === 'function') {
-    // eslint-disable-next-line no-undef
-    return new Promise(function(resolve, reject) {
-      func(options, function(err, result) {
-        if (err) { reject(err); } else { resolve(result); }
-      });
-    });
-  }
-
-  if (typeof callback !== 'function') {
-    throw new TypeError('callback must be a function');
-  }
-
-  if (options && typeof options !== 'object') {
-    process.nextTick(function() {
-      callback(new TypeError('options must be an object'));
-    });
-    return undefined;
-  }
-
-  // Do stuff
-  return undefined;
-};
-
-module.exports = modulename;
+// TODO:  Add process.version check once a release includes 08039628 and
+// return functions from fs when they support file descriptor arguments.
+module.exports = fsFileSyncFD;
