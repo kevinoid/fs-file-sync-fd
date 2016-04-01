@@ -1,6 +1,6 @@
 {
   "name": "fs-file-sync-fd",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Backported version of fs.readFileSync, fs.writeFileSync, and fs.appendFileSync which accept file descriptor arguments for synchronously reading and writing to open file descriptors.",
   "keywords": [
     "backport",
