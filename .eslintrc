@@ -1,3 +1,7 @@
+# Node.js .eslint from commit 08039628 with the following changes:
+# - Comment out custom require-buffer rule, since it isn't useful outside core
+# - Comment out no-reserved-keys (removed in ESLint v1.0) and add quote-props
+#   rule with similar behavior
 env:
   node: true
 
@@ -28,9 +32,11 @@ rules:
   ## disallow assignment of exceptional params
   no-ex-assign: 2
   ## disallow use of reserved words as keys like enum, class
-  no-reserved-keys: 2
+  #no-reserved-keys: 2
   ## disallow unreachable code
   no-unreachable: 2
+  ## require reserved words used as property names to be to be quoted
+  quote-props: [2, "as-needed"]
   ## require valid typeof compared string like typeof foo === 'strnig'
   valid-typeof: 2
 
@@ -81,7 +87,7 @@ rules:
   no-undef: 2
 
   # Custom rules in tools/eslint-rules
-  require-buffer: 2
+  #require-buffer: 2
 
 # Global scoped method and vars
 globals:
