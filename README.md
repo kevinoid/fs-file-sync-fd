@@ -26,7 +26,7 @@ functions will be returned in preference to the versions in this module.
 var fs = require('fs');
 var readFileSync = require('fs-file-sync-fd').readFileSync;
 
-var fd = fs.openSync('package.json');
+var fd = fs.openSync('package.json', 'r');
 var packageJson = JSON.parse(readFileSync(fd, {encoding: 'utf8'}));
 console.log('Package Version: ' + packageJson.version);
 ```
