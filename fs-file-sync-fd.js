@@ -1,6 +1,15 @@
-// Maintainers, keep in mind that ES1-style octal literals (`0666`) are not
-// allowed in strict mode. Use ES6-style octal literals instead (`0o666`).
-
+/**
+ * This is a nearly verbatim copy of fs.readFileSync, fs.writeFileSync, and
+ * fs.appendFileSync (and private supporting functions) from commit 08039628,
+ * which added support for passing a file descriptor in place of a file path.
+ *
+ * Changes from 08039628:
+ * - Replace ES6 octal literals with non-octal literals to allow using the
+ *   module on Node 0.12 and earlier.
+ *
+ * @copyright Copyright Node.js contributors. All rights reserved.
+ * @license MIT
+ */
 'use strict';
 
 var fs = require('fs');
