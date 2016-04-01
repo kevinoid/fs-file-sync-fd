@@ -1,6 +1,12 @@
-extends: "../.eslintrc"
+## Test-specific linter rules
 
-env:
-    mocha: true
+rules:
+  ## allow undeclared variables
+  no-undef: 0
+  ## allow global Buffer usage
+  require-buffer: 0
+  ## common module is mandatory in tests
+  required-modules: [2, "common"]
 
-# vi: set sts=2 sw=2 et ft=yaml:
+globals:
+  gc: false
