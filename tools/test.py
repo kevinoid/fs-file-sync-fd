@@ -47,6 +47,7 @@ import errno
 from os.path import join, dirname, abspath, basename, isdir, exists
 from datetime import datetime
 from Queue import Queue, Empty
+from distutils import spawn
 
 logger = logging.getLogger('testrunner')
 skip_regex = re.compile(r'# SKIP\S*\s+(.*)', re.IGNORECASE)
@@ -772,6 +773,9 @@ class Context(object):
     self.store_unexpected_output = store_unexpected_output
 
   def GetVm(self, arch, mode):
+    # fs-file-sync change:  Use system node binary
+    return spawn.find_executable('node')
+
     if arch == 'none':
       name = 'out/Debug/node' if mode == 'debug' else 'out/Release/node'
     else:
