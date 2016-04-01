@@ -1,12 +1,14 @@
+# Node.js test/.eslint from commit 08039628 with the following changes:
+# - Comment out custom require-buffer and required-modules rules
 ## Test-specific linter rules
 
 rules:
   ## allow undeclared variables
   no-undef: 0
   ## allow global Buffer usage
-  require-buffer: 0
+  #require-buffer: 0
   ## common module is mandatory in tests
-  required-modules: [2, "common"]
+  #required-modules: [2, "common"]
 
 globals:
   gc: false
