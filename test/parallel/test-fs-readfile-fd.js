@@ -6,6 +6,7 @@ var path = require('path'),
     fs = require('fs'),
     fn = path.join(common.fixturesDir, 'empty.txt');
 
+/* fs-file-sync-fd change:  Disable FD tests of readFile.  Not supported.
 tempFd(function(fd, close) {
   fs.readFile(fd, function(err, data) {
     assert.ok(data);
@@ -19,6 +20,7 @@ tempFd(function(fd, close) {
     close();
   });
 });
+*/
 
 tempFdSync(function(fd) {
   assert.ok(fs.readFileSync(fd));

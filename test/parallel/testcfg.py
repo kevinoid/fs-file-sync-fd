@@ -6,7 +6,7 @@ import testpy
 # By doing this, the Node.js tests can be used without modification.
 PRELOAD_PATH = os.path.join(os.path.dirname(__file__), '..', 'preload-fs-file-sync-fd.js')
 PRELOAD_PATH = os.path.normpath(PRELOAD_PATH)
-EXTRA_ARGS = ['-r', PRELOAD_PATH]
+EXTRA_ARGS = [PRELOAD_PATH]
 
 def GetConfiguration(context, root):
   return testpy.ParallelTestConfiguration(context, root, 'parallel', EXTRA_ARGS)
