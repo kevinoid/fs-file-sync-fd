@@ -3,9 +3,10 @@
 
 'use strict';
 
+const fs = require('fs');
 const util = require('util');
 
-const fs = exports;
+const fsFileSyncFD = {};
 
 function throwOptionsError(options) {
   throw new TypeError('Expected options to be either an object or a string, ' +
@@ -22,7 +23,7 @@ function isFd(path) {
   return (path >>> 0) === path;
 }
 
-fs.readFileSync = function(path, options) {
+fsFileSyncFD.readFileSync = function(path, options) {
   if (!options) {
     options = { encoding: null, flag: 'r' };
   } else if (typeof options === 'string') {
@@ -105,7 +106,7 @@ fs.readFileSync = function(path, options) {
   return buffer;
 };
 
-fs.writeFileSync = function(path, data, options) {
+fsFileSyncFD.writeFileSync = function(path, data, options) {
   if (!options) {
     options = { encoding: 'utf8', mode: 0o666, flag: 'w' };
   } else if (typeof options === 'string') {
@@ -140,7 +141,7 @@ fs.writeFileSync = function(path, data, options) {
   }
 };
 
-fs.appendFileSync = function(path, data, options) {
+fsFileSyncFD.appendFileSync = function(path, data, options) {
   if (!options) {
     options = { encoding: 'utf8', mode: 0o666, flag: 'a' };
   } else if (typeof options === 'string') {
@@ -158,3 +159,5 @@ fs.appendFileSync = function(path, data, options) {
 
   fs.writeFileSync(path, data, options);
 };
+
+module.exports = fsFileSyncFD;
