@@ -166,7 +166,7 @@ fsFileSyncFD.appendFileSync = function(path, data, options) {
   if (isFd(path))
     options.flag = 'a';
 
-  fs.writeFileSync(path, data, options);
+  fsFileSyncFD.writeFileSync(path, data, options);
 };
 
 module.exports = fsFileSyncFD;
