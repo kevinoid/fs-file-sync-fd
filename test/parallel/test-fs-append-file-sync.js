@@ -52,13 +52,13 @@ assert.equal(buf.length + currentFileData.length, fileData3.length);
 var filename4 = join(common.tmpDir, 'append-sync4.txt');
 fs.writeFileSync(filename4, currentFileData, { mode: m });
 
-var m = 0o600;
+var m = 384; /*=0o600*/
 fs.appendFileSync(filename4, num, { mode: m });
 
 // windows permissions aren't unix
 if (!common.isWindows) {
   var st = fs.statSync(filename4);
-  assert.equal(st.mode & 0o700, m);
+  assert.equal(st.mode & 448 /*=0o700*/, m);
 }
 
 var fileData4 = fs.readFileSync(filename4);
@@ -70,7 +70,7 @@ assert.equal(Buffer.byteLength('' + num) + currentFileData.length,
 var filename5 = join(common.tmpDir, 'append-sync5.txt');
 fs.writeFileSync(filename5, currentFileData);
 
-var filename5fd = fs.openSync(filename5, 'a+', 0o600);
+var filename5fd = fs.openSync(filename5, 'a+', 384 /*=0o600*/);
 fs.appendFileSync(filename5fd, data);
 fs.closeSync(filename5fd);
 

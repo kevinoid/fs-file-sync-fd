@@ -406,7 +406,7 @@ exports.getServiceName = function getServiceName(port, protocol) {
   try {
     var servicesContent = fs.readFileSync(etcServicesFileName,
       { encoding: 'utf8'});
-    var regexp = `^(\\w+)\\s+\\s${port}/${protocol}\\s`;
+    var regexp = util.format('^(\\w+)\\s+\\s%d/%s\\s', port, protocol);
     var re = new RegExp(regexp, 'm');
 
     var matches = re.exec(servicesContent);

@@ -6,7 +6,8 @@ var path = require('path');
 // simulate `cat readfile.js | node readfile.js`
 
 if (common.isWindows || common.isAix) {
-  console.log(`1..0 # Skipped: No /dev/stdin on ${process.platform}.`);
+  console.log(util.format('1..0 # Skipped: No /dev/stdin on %s.',
+        process.platform));
   return;
 }
 
