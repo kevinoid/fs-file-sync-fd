@@ -50,12 +50,12 @@ var readFileSync = require('fs-file-sync-fd').readFileSync;
 var stdinContent = readFileSync(0);
 ```
 
-### Write to stdout
+### Append to stdout
 
 ```js
-var writeFileSync = require('fs-file-sync-fd').writeFileSync;
-writeFileSync(1, 'Hello ');
-writeFileSync(1, 'World\n');
+var appendFileSync = require('fs-file-sync-fd').appendFileSync;
+appendFileSync(1, 'Hello ');
+appendFileSync(1, 'World\n');
 ```
 
 ## API Docs
