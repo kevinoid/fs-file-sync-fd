@@ -5,6 +5,8 @@
 rules:
   ## allow undeclared variables
   no-undef: 0
+  ## 2 space indentation
+  indent: [2, 2, {"VariableDeclarator": 2}]
   ## allow global Buffer usage
   #require-buffer: 0
   ## common module is mandatory in tests
