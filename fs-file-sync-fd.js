@@ -33,6 +33,42 @@ function isFd(path) {
   return (path >>> 0) === path;
 }
 
+function tryStatSync(fd, isUserFd) {
+  var threw = true;
+  var st;
+  try {
+    st = fs.fstatSync(fd);
+    threw = false;
+  } finally {
+    if (threw && !isUserFd) fs.closeSync(fd);
+  }
+  return st;
+}
+
+function tryCreateBuffer(size, fd, isUserFd) {
+  var threw = true;
+  var buffer;
+  try {
+    buffer = Buffer.allocUnsafe(size);
+    threw = false;
+  } finally {
+    if (threw && !isUserFd) fs.closeSync(fd);
+  }
+  return buffer;
+}
+
+function tryReadSync(fd, isUserFd, buffer, pos, len) {
+  var threw = true;
+  var bytesRead;
+  try {
+    bytesRead = fs.readSync(fd, buffer, pos, len);
+    threw = false;
+  } finally {
+    if (threw && !isUserFd) fs.closeSync(fd);
+  }
+  return bytesRead;
+}
+
 fsFileSyncFD.readFileSync = function(path, options) {
   if (!options) {
     options = { encoding: null, flag: 'r' };
@@ -49,17 +85,8 @@ fsFileSyncFD.readFileSync = function(path, options) {
   var isUserFd = isFd(path); // file descriptor ownership
   var fd = isUserFd ? path : fs.openSync(path, flag, 438 /*=0o666*/);
 
-  var st;
-  var size;
-  var threw = true;
-  try {
-    st = fs.fstatSync(fd);
-    size = st.isFile() ? st.size : 0;
-    threw = false;
-  } finally {
-    if (threw && !isUserFd) fs.closeSync(fd);
-  }
-
+  var st = tryStatSync(fd, isUserFd);
+  var size = st.isFile() ? st.size : 0;
   var pos = 0;
   var buffer; // single buffer with file data
   var buffers; // list for when size is unknown
@@ -67,39 +94,27 @@ fsFileSyncFD.readFileSync = function(path, options) {
   if (size === 0) {
     buffers = [];
   } else {
-    threw = true;
-    try {
-      buffer = new Buffer(size);
-      threw = false;
-    } finally {
-      if (threw && !isUserFd) fs.closeSync(fd);
-    }
+    buffer = tryCreateBuffer(size, fd, isUserFd);
   }
 
-  var done = false;
   var bytesRead;
 
-  while (!done) {
-    threw = true;
-    try {
-      if (size !== 0) {
-        bytesRead = fs.readSync(fd, buffer, pos, size - pos);
-      } else {
-        // the kernel lies about many files.
-        // Go ahead and try to read some bytes.
-        buffer = new Buffer(8192);
-        bytesRead = fs.readSync(fd, buffer, 0, 8192);
-        if (bytesRead) {
-          buffers.push(buffer.slice(0, bytesRead));
-        }
+  if (size !== 0) {
+    do {
+      bytesRead = tryReadSync(fd, isUserFd, buffer, pos, size - pos);
+      pos += bytesRead;
+    } while (bytesRead !== 0 && pos < size);
+  } else {
+    do {
+      // the kernel lies about many files.
+      // Go ahead and try to read some bytes.
+      buffer = Buffer.allocUnsafe(8192);
+      bytesRead = tryReadSync(fd, isUserFd, buffer, 0, 8192);
+      if (bytesRead !== 0) {
+        buffers.push(buffer.slice(0, bytesRead));
       }
-      threw = false;
-    } finally {
-      if (threw && !isUserFd) fs.closeSync(fd);
-    }
-
-    pos += bytesRead;
-    done = (bytesRead === 0) || (size !== 0 && pos >= size);
+      pos += bytesRead;
+    } while (bytesRead !== 0);
   }
 
   if (!isUserFd)
