@@ -18,9 +18,24 @@ var util = require('util');
 
 var fsFileSyncFD = {};
 
-function throwOptionsError(options) {
-  throw new TypeError('Expected options to be either an object or a string, ' +
-    'but got ' + typeof options + ' instead');
+function getOptions(options, defaultOptions) {
+  if (options === null || options === undefined ||
+      typeof options === 'function') {
+    return defaultOptions;
+  }
+
+  if (typeof options === 'string') {
+    defaultOptions = util._extend({}, defaultOptions);
+    defaultOptions.encoding = options;
+    options = defaultOptions;
+  } else if (typeof options !== 'object') {
+    throw new TypeError('"options" must be a string or an object, got ' +
+                        typeof options + ' instead.');
+  }
+
+  if (options.encoding !== 'buffer')
+    assertEncoding(options.encoding);
+  return options;
 }
 
 function assertEncoding(encoding) {
@@ -70,20 +85,9 @@ function tryReadSync(fd, isUserFd, buffer, pos, len) {
 }
 
 fsFileSyncFD.readFileSync = function(path, options) {
-  if (!options) {
-    options = { encoding: null, flag: 'r' };
-  } else if (typeof options === 'string') {
-    options = { encoding: options, flag: 'r' };
-  } else if (typeof options !== 'object') {
-    throwOptionsError(options);
-  }
-
-  var encoding = options.encoding;
-  assertEncoding(encoding);
-
-  var flag = options.flag || 'r';
+  options = getOptions(options, { flag: 'r' });
   var isUserFd = isFd(path); // file descriptor ownership
-  var fd = isUserFd ? path : fs.openSync(path, flag, 438 /*=0o666*/);
+  var fd = isUserFd ? path : fs.openSync(path, options.flag || 'r', 438);
 
   var st = tryStatSync(fd, isUserFd);
   var size = st.isFile() ? st.size : 0;
@@ -127,22 +131,14 @@ fsFileSyncFD.readFileSync = function(path, options) {
     buffer = buffer.slice(0, pos);
   }
 
-  if (encoding) buffer = buffer.toString(encoding);
+  if (options.encoding) buffer = buffer.toString(options.encoding);
   return buffer;
 };
 
 fsFileSyncFD.writeFileSync = function(path, data, options) {
-  if (!options) {
-    options = { encoding: 'utf8', mode: 438 /*=0o666*/, flag: 'w' };
-  } else if (typeof options === 'string') {
-    options = { encoding: options, mode: 438 /*=0o666*/, flag: 'w' };
-  } else if (typeof options !== 'object') {
-    throwOptionsError(options);
-  }
-
-  assertEncoding(options.encoding);
-
+  options = getOptions(options, { encoding: 'utf8', mode: 438, flag: 'w' });
   var flag = options.flag || 'w';
+
   var isUserFd = isFd(path); // file descriptor ownership
   var fd = isUserFd ? path : fs.openSync(path, flag, options.mode);
 
@@ -167,13 +163,7 @@ fsFileSyncFD.writeFileSync = function(path, data, options) {
 };
 
 fsFileSyncFD.appendFileSync = function(path, data, options) {
-  if (!options) {
-    options = { encoding: 'utf8', mode: 438 /*=0o666*/, flag: 'a' };
-  } else if (typeof options === 'string') {
-    options = { encoding: options, mode: 438 /*=0o666*/, flag: 'a' };
-  } else if (typeof options !== 'object') {
-    throwOptionsError(options);
-  }
+  options = getOptions(options, { encoding: 'utf8', mode: 438, flag: 'a' });
 
   if (!options.flag)
     options = util._extend({ flag: 'a' }, options);
