@@ -38,6 +38,13 @@ function getOptions(options, defaultOptions) {
   return options;
 }
 
+function copyObject(source, target) {
+  target = arguments.length >= 2 ? target : {};
+  for (const key in source)
+    target[key] = source[key];
+  return target;
+}
+
 function assertEncoding(encoding) {
   if (encoding && !Buffer.isEncoding(encoding)) {
     throw new Error('Unknown encoding: ' + encoding);
@@ -165,11 +172,11 @@ fsFileSyncFD.writeFileSync = function(path, data, options) {
 fsFileSyncFD.appendFileSync = function(path, data, options) {
   options = getOptions(options, { encoding: 'utf8', mode: 438, flag: 'a' });
 
-  if (!options.flag)
-    options = util._extend({ flag: 'a' }, options);
+  // Don't make changes directly on options object
+  options = copyObject(options);
 
   // force append behavior when using a supplied file descriptor
-  if (isFd(path))
+  if (!options.flag || isFd(path))
     options.flag = 'a';
 
   fsFileSyncFD.writeFileSync(path, data, options);
