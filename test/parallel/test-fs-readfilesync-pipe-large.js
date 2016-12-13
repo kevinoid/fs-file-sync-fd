@@ -2,6 +2,7 @@
 var common = require('../common');
 var assert = require('assert');
 var path = require('path');
+var util = require('util');
 
 // simulate `cat readfile.js | node readfile.js`
 

@@ -5,6 +5,7 @@ var fs = require('fs');
 var assert = require('assert');
 var os = require('os');
 var child_process = require('child_process');
+var util = require('util');
 
 
 exports.testDir = path.dirname(__filename);
