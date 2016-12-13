@@ -10,6 +10,7 @@
  * @copyright Copyright Node.js contributors. All rights reserved.
  * @license MIT
  */
+
 'use strict';
 
 var fs = require('fs');
