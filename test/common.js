@@ -258,6 +258,9 @@ if (global.DTRACE_HTTP_SERVER_RESPONSE) {
   knownGlobals.push(DTRACE_HTTP_CLIENT_REQUEST);
   knownGlobals.push(DTRACE_NET_STREAM_END);
   knownGlobals.push(DTRACE_NET_SERVER_CONNECTION);
+}
+
+if (global.DTRACE_NET_SOCKET_READ) {
   knownGlobals.push(DTRACE_NET_SOCKET_READ);
   knownGlobals.push(DTRACE_NET_SOCKET_WRITE);
 }
