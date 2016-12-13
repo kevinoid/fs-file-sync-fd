@@ -40,7 +40,7 @@ function getOptions(options, defaultOptions) {
 
 function copyObject(source, target) {
   target = arguments.length >= 2 ? target : {};
-  for (const key in source)
+  for (var key in source)
     target[key] = source[key];
   return target;
 }
