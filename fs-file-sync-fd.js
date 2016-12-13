@@ -1,11 +1,10 @@
 /**
- * This is a nearly verbatim copy of fs.readFileSync, fs.writeFileSync, and
- * fs.appendFileSync (and private supporting functions) from commit 08039628,
- * which added support for passing a file descriptor in place of a file path.
- *
- * Changes from 08039628:
- * - Replace ES6 octal literals with non-octal literals to allow using the
+ * This is a copy of fs.readFileSync, fs.writeFileSync, and fs.appendFileSync
+ * (and supporting functions) from lib/fs.js with the following changes:
+ * - Replace ES6 octal literals with decimal literals to allow using the
  *   module on Node 0.12 and earlier.
+ * - Continue using Buffer constructor instead of Buffer.allocUnsafe and
+ *   Buffer.from to support Node 5.9 and earlier.
  *
  * @copyright Copyright Node.js contributors. All rights reserved.
  * @license MIT
