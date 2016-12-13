@@ -49,7 +49,7 @@ function tryCreateBuffer(size, fd, isUserFd) {
   var threw = true;
   var buffer;
   try {
-    buffer = Buffer.allocUnsafe(size);
+    buffer = new Buffer(size);
     threw = false;
   } finally {
     if (threw && !isUserFd) fs.closeSync(fd);
@@ -108,7 +108,7 @@ fsFileSyncFD.readFileSync = function(path, options) {
     do {
       // the kernel lies about many files.
       // Go ahead and try to read some bytes.
-      buffer = Buffer.allocUnsafe(8192);
+      buffer = new Buffer(8192);
       bytesRead = tryReadSync(fd, isUserFd, buffer, 0, 8192);
       if (bytesRead !== 0) {
         buffers.push(buffer.slice(0, bytesRead));
