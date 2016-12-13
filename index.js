@@ -5,8 +5,8 @@
 
 'use strict';
 
-var fsFileSyncFD = require('./fs-file-sync-fd');
-
-// TODO:  Add process.version check once a release includes 08039628 and
-// return functions from fs when they support file descriptor arguments.
-module.exports = fsFileSyncFD;
+// Note:  Feature detection is both expensive (syscall overhead) and difficult
+// to get right.  Use version detection instead.
+module.exports = process.versions.node.split('.')[0] >= 6 ?
+  require('fs') :
+  require('./fs-file-sync-fd');

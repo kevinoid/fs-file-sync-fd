@@ -12,10 +12,11 @@
 
 'use strict';
 
-var fs = require('fs');
 var util = require('util');
 
-var fsFileSyncFD = {};
+// This module exports an augmented version of the the fs module without
+// modifying the fs module by "subclassing" it prototypally.
+var fs = Object.create(require('fs'));
 
 function getOptions(options, defaultOptions) {
   if (options === null || options === undefined ||
@@ -90,7 +91,7 @@ function tryReadSync(fd, isUserFd, buffer, pos, len) {
   return bytesRead;
 }
 
-fsFileSyncFD.readFileSync = function(path, options) {
+fs.readFileSync = function(path, options) {
   options = getOptions(options, { flag: 'r' });
   var isUserFd = isFd(path); // file descriptor ownership
   var fd = isUserFd ? path : fs.openSync(path, options.flag || 'r', 438);
@@ -141,7 +142,7 @@ fsFileSyncFD.readFileSync = function(path, options) {
   return buffer;
 };
 
-fsFileSyncFD.writeFileSync = function(path, data, options) {
+fs.writeFileSync = function(path, data, options) {
   options = getOptions(options, { encoding: 'utf8', mode: 438, flag: 'w' });
   var flag = options.flag || 'w';
 
@@ -168,7 +169,7 @@ fsFileSyncFD.writeFileSync = function(path, data, options) {
   }
 };
 
-fsFileSyncFD.appendFileSync = function(path, data, options) {
+fs.appendFileSync = function(path, data, options) {
   options = getOptions(options, { encoding: 'utf8', mode: 438, flag: 'a' });
 
   // Don't make changes directly on options object
@@ -178,7 +179,7 @@ fsFileSyncFD.appendFileSync = function(path, data, options) {
   if (!options.flag || isFd(path))
     options.flag = 'a';
 
-  fsFileSyncFD.writeFileSync(path, data, options);
+  fs.writeFileSync(path, data, options);
 };
 
-module.exports = fsFileSyncFD;
+module.exports = fs;

@@ -19,17 +19,16 @@ subsequent updates and only the changes necessary to support older versions of
 Node.js (e.g.  replacing octal literals with decimal to support v0.12 and
 earlier).
 
-When running on Node v6.0.0 or later, the `fs` functions will be returned in
-preference to the versions in this module.
+When running on Node v6.0.0 or later, importing this module is equivalent to
+importing the `fs` module directly.
 
 ## Introductory Example
 
 ```js
-var fs = require('fs');
-var readFileSync = require('fs-file-sync-fd').readFileSync;
+var fs = require('fs-file-sync-fd');
 
 var fd = fs.openSync('package.json', 'r');
-var packageJson = JSON.parse(readFileSync(fd, {encoding: 'utf8'}));
+var packageJson = JSON.parse(fs.readFileSync(fd, {encoding: 'utf8'}));
 console.log('Package Version: ' + packageJson.version);
 ```
 
