@@ -8,18 +8,19 @@ Backported `fs.*FileSync` Functions
 [![Version on NPM](https://img.shields.io/npm/v/fs-file-sync-fd.svg?style=flat)](https://www.npmjs.com/package/fs-file-sync-fd)
 
 Standalone version of `fs.readFileSync`, `fs.writeFileSync`, and
-`fs.appendFileSync` from
+`fs.appendFileSync` which accept file descriptor arguments for synchronously
+reading and writing to open file descriptors (a change introduced in
 [nodejs/node@08039628](https://github.com/nodejs/node/commit/08039628), which
-accept file descriptor arguments for synchronously reading and writing to open
-file descriptors.
+first appeared in Node v6.0.0).
 
 This module uses the `fs` module sources and tests from
 [nodejs/node@08039628](https://github.com/nodejs/node/commit/08039628) with
-only the changes necessary to support older versions of Node.js (e.g.
-replacing octal literals with decimal to support v0.12 and earlier).
+subsequent updates and only the changes necessary to support older versions of
+Node.js (e.g.  replacing octal literals with decimal to support v0.12 and
+earlier).
 
-When running on a version of Node.js which includes `08039628`, the `fs`
-functions will be returned in preference to the versions in this module.
+When running on Node v6.0.0 or later, the `fs` functions will be returned in
+preference to the versions in this module.
 
 ## Introductory Example
 
@@ -63,9 +64,9 @@ appendFileSync(1, 'World\n');
 
 The functions in this module are documented as part of the Node.js API:
 
-* [appendFileSync](https://github.com/nodejs/node/blob/4d4f3535/doc/api/fs.markdown#fsappendfilesyncfile-data-options)
-* [readFileSync](https://github.com/nodejs/node/blob/4d4f3535/doc/api/fs.markdown#fsreadfilesyncfile-options)
-* [writeFileSync](https://github.com/nodejs/node/blob/4d4f3535/doc/api/fs.markdown#fswritefilesyncfile-data-options)
+* [appendFileSync](https://nodejs.org/api/fs.html#fs_fs_appendfilesync_file_data_options)
+* [readFileSync](https://nodejs.org/api/fs.html#fs_fs_readfilesync_file_options)
+* [writeFileSync](https://nodejs.org/api/fs.html#fs_fs_writefilesync_file_data_options)
 
 ## License
 
