@@ -1,8 +1,8 @@
 Backported `fs.*FileSync` Functions
 ===================================
 
-[![Build Status: Linux](https://img.shields.io/travis/kevinoid/fs-file-sync-fd.svg?style=flat&label=build+on+linux)](https://travis-ci.org/kevinoid/fs-file-sync-fd)
-[![Build Status: Windows](https://img.shields.io/appveyor/ci/kevinoid/fs-file-sync-fd.svg?style=flat&label=build+on+windows)](https://ci.appveyor.com/project/kevinoid/fs-file-sync-fd)
+[![Build Status: Linux](https://img.shields.io/travis/kevinoid/fs-file-sync-fd/master.svg?style=flat&label=build+on+linux)](https://travis-ci.org/kevinoid/fs-file-sync-fd)
+[![Build Status: Windows](https://img.shields.io/appveyor/ci/kevinoid/fs-file-sync-fd/master.svg?style=flat&label=build+on+windows)](https://ci.appveyor.com/project/kevinoid/fs-file-sync-fd)
 [![Dependency Status](https://img.shields.io/david/kevinoid/fs-file-sync-fd.svg?style=flat)](https://david-dm.org/kevinoid/fs-file-sync-fd)
 [![Supported Node Version](https://img.shields.io/node/v/fs-file-sync-fd.svg?style=flat)](https://www.npmjs.com/package/fs-file-sync-fd)
 [![Version on NPM](https://img.shields.io/npm/v/fs-file-sync-fd.svg?style=flat)](https://www.npmjs.com/package/fs-file-sync-fd)

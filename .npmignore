@@ -5,3 +5,6 @@
 .travis.yml
 /test
 /tools
+TODO.*
+appveyor.yml
+jsdoc*.conf.json
