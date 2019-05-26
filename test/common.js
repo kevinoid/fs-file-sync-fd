@@ -247,6 +247,10 @@ var knownGlobals = [setTimeout,
                     process,
                     global];
 
+if (global.queueMicrotask) {
+  knownGlobals.push(queueMicrotask);
+}
+
 if (global.gc) {
   knownGlobals.push(gc);
 }
